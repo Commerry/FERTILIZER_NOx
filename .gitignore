@@ -1,0 +1,23 @@
+# Claude Code (ไม่เอาเข้า git)
+.claude/
+
+# โฟลเดอร์สำเนา/ของเก่า
+MANUAL_FIX_*/
+
+# เครื่องมือที่ setup.ps1 โหลดมา (ไม่ต้อง commit)
+tools-bin/
+
+# build artifacts
+build/
+*.o
+*.elf
+*.map
+
+# python / misc
+.venv/
+__pycache__/
+*.pyc
+*.tmp
+*.log
+Thumbs.db
+desktop.ini

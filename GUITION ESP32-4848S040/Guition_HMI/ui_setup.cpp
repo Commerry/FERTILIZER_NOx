@@ -252,16 +252,14 @@ static void on_pin_entered(float v, void *user)
     long pin = (long)v;
 
     // ค่า PIN ที่ใช้เทียบ:
-    //   - ได้จาก Nano แล้ว (s_have) -> ใช้ค่าจาก Nano (ตั้งจากจอได้)
-    //   - ยังไม่ได้ *และลิงก์ไม่เคยติดเลย* -> ใช้ค่า default ฝั่งจอ (ทดสอบจอเดี่ยว ๆ)
-    //   *** ถ้าเคยเชื่อม Nano แล้ว (linkEverUp) จะไม่ fallback เป็น default ***
-    //   กัน 2 เคส: (ก) ใช้ factory PIN แทนค่าจริงที่ Nano ตั้งไว้  (ข) คนตัดสายลิงก์แล้ว
-    //   login ด้วย 1111 ข้ามรหัสจริง.  -1 = ค่าที่ PIN ไม่มีทางตรง (ปิดระดับนั้น)
-    bool def = !g_app.linkEverUp;           // อนุญาต default เฉพาะตอน "ไม่เคยติดลิงก์เลย"
-    long vExpert = s_have[CFG_PIN_EXPERT]     ? (long)s_val[CFG_PIN_EXPERT]     : (def ? 4444 : -1);
-    long vComm   = s_have[CFG_PIN_COMMISSION] ? (long)s_val[CFG_PIN_COMMISSION] : (def ? 3333 : -1);
-    long vSup    = s_have[CFG_PIN_SUPERVISOR] ? (long)s_val[CFG_PIN_SUPERVISOR] : (def ? 2222 : -1);
-    long vOper   = s_have[CFG_PIN_OPERATOR]   ? (long)s_val[CFG_PIN_OPERATOR]   : (def ? 1111 : -1);
+    //   - ได้ค่าจาก Nano แล้ว (s_have) -> ใช้ค่าจาก Nano (ตั้งจากจอได้)
+    //   - ยังไม่ได้ (ไม่ต่อ Nano / config ยังไม่ sync) -> ใช้ค่า default ฝั่งจอ
+    //   *** ต้องยอมให้ default เสมอตอนยังไม่ sync -- ไม่งั้นถ้า config ไม่มา
+    //       (เช่น Nano เก่า/บัสเงียบ) operator จะ login ไม่ได้เลย = ล็อกตาย ***
+    long vExpert = s_have[CFG_PIN_EXPERT]     ? (long)s_val[CFG_PIN_EXPERT]     : 4444;
+    long vComm   = s_have[CFG_PIN_COMMISSION] ? (long)s_val[CFG_PIN_COMMISSION] : 3333;
+    long vSup    = s_have[CFG_PIN_SUPERVISOR] ? (long)s_val[CFG_PIN_SUPERVISOR] : 2222;
+    long vOper   = s_have[CFG_PIN_OPERATOR]   ? (long)s_val[CFG_PIN_OPERATOR]   : 1111;
 
     // ไล่จากสิทธิ์สูงสุดลงมา -- ถ้า PIN ซ้ำกัน จะได้สิทธิ์ที่สูงกว่า
     uint8_t lvl = 0;

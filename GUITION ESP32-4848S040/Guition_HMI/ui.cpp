@@ -303,7 +303,6 @@ static void update_link()
     static bool     s_beatOn   = true;
 
     bool up = g_app.linkUp;
-    if (up) g_app.linkEverUp = true;    // เคยติดแล้ว -> ปิด default-PIN fallback (ดู on_pin_entered)
 
     if (up != s_lastUp) {
         s_lastUp = up;

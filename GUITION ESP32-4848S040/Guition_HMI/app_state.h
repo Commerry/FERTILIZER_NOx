@@ -31,7 +31,6 @@ struct AppState {
 
     // --- สุขภาพของลิงก์ ---
     bool     linkUp      = false;
-    bool     linkEverUp  = false;   // เคยเชื่อม Nano ได้แล้วอย่างน้อย 1 ครั้งในเซสชันนี้
     uint32_t lastFrameMs = 0;
     uint32_t rxFrames    = 0;
     uint32_t crcErrors   = 0;

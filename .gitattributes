@@ -1,0 +1,7 @@
+# บังคับ shell script เป็น LF เสมอ (ไม่งั้นบน macOS/Linux รันไม่ได้ -- bad interpreter)
+*.sh text eol=lf
+setup.sh text eol=lf
+flash.sh text eol=lf
+
+# PowerShell ให้เป็น CRLF (Windows)
+*.ps1 text eol=crlf

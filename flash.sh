@@ -21,7 +21,7 @@ if [ "$TARGET" = "nano" ]; then
     SKETCH="$ROOT"
     echo ">> แฟลช Nano (ถอดสายจอ D0/D1 ก่อน!)"
 elif [ "$TARGET" = "display" ]; then
-    FQBN="esp32:esp32:esp32s3:FlashSize=16M,FlashMode=qio,PSRAM=opi,CDCOnBoot=default,PartitionScheme=huge_app"
+    FQBN="esp32:esp32:esp32s3:FlashSize=16M,FlashMode=qio,PSRAM=opi,CDCOnBoot=default,PartitionScheme=huge_app,UploadSpeed=115200"
     SKETCH="$ROOT/GUITION ESP32-4848S040/Guition_HMI"
     echo ">> แฟลชจอ ESP32 (ถอด link Nano; ค้าง Connecting = กด BOOT ค้าง)"
 else

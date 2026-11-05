@@ -21,7 +21,7 @@ if ($target -eq "nano") {
     $sketch = $ROOT
     Write-Host ">> แฟลช Nano (ถอดสายจอ D0/D1 ออกก่อน!)" -ForegroundColor Yellow
 } else {
-    $fqbn   = "esp32:esp32:esp32s3:FlashSize=16M,FlashMode=qio,PSRAM=opi,CDCOnBoot=default,PartitionScheme=huge_app"
+    $fqbn   = "esp32:esp32:esp32s3:FlashSize=16M,FlashMode=qio,PSRAM=opi,CDCOnBoot=default,PartitionScheme=huge_app,UploadSpeed=115200"
     $sketch = Join-Path $ROOT "GUITION ESP32-4848S040\Guition_HMI"
     Write-Host ">> แฟลชจอ ESP32 (ถอดสาย link Nano; ถ้าค้าง Connecting ให้กด BOOT ค้าง)" -ForegroundColor Yellow
 }

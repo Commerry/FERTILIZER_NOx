@@ -46,6 +46,19 @@ powershell -ExecutionPolicy Bypass -File setup.ps1
 
 ---
 
+## 2.5 ทางเลือก: ลงผ่าน macOS / Linux
+ใช้สคริปต์ `.sh` แทน `.ps1` (ขั้นตอนเหมือนกัน):
+```bash
+# ลงไดรเวอร์ CH340 ก่อน: โหลด "CH34xVCPDriver" จาก wch.cn -> ติดตั้ง -> รีสตาร์ต
+git clone https://github.com/Commerry/FERTILIZER_NOx.git
+cd FERTILIZER_NOx
+chmod +x setup.sh flash.sh
+./setup.sh
+ls /dev/cu.*                                   # หาพอร์ต (เช่น /dev/cu.wchusbserial10)
+./flash.sh nano    /dev/cu.wchusbserial10      # ถอดสายจอ D0/D1 ก่อน
+./flash.sh display /dev/cu.wchusbserial10      # ถอด link Nano ก่อน (ค้าง=กด BOOT)
+```
+
 ## 3. รหัส PIN (ดู FERTILIZER_NOx_User_Access_Guide.pdf)
 | ระดับ | PIN |
 |---|---|

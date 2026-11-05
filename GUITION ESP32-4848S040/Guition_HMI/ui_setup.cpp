@@ -64,25 +64,19 @@ static const Item ITEMS_TIMER[] = {
     { CFG_AUTO_START, "AUTO START ON POWER-UP", "", 0, 1, 0, ACC_SUPERVISOR, 1.0f },
 };
 
+// ควบคุมวาล์ว RV แบบ "band" -- O2 อยู่ช่วงไหน เปิดวาล์ว % คงที่ของช่วงนั้น
+//   ขอบ O2 3 จุด แบ่งเป็น 4 ช่วง:  >MAXOUT / ROUGH / MEDIUM / FINE
+//   แต่ละช่วงตั้ง "% เปิดวาล์ว" ได้เอง  (ไม่มี step/PID แล้ว)
 static const Item ITEMS_RV[] = {
-    { CFG_RV1_MIN,        "RV1 ROUGH - O2 MIN",  "%", 0,   25, 1, ACC_COMMISSIONER, 1.0f },
-    { CFG_RV1_MAX,        "RV1 ROUGH - O2 MAX",  "%", 0,   25, 1, ACC_COMMISSIONER, 1.0f },
-    { CFG_RV_COARSE_STEP, "RV1 ROUGH - STEP",    "%", 0,  100, 1, ACC_COMMISSIONER, 1.0f },
-    { CFG_RV2_MIN,        "RV2 MEDIUM - O2 MIN", "%", 0,   25, 1, ACC_COMMISSIONER, 1.0f },
-    { CFG_RV2_MAX,        "RV2 MEDIUM - O2 MAX", "%", 0,   25, 1, ACC_COMMISSIONER, 1.0f },
-    { CFG_RV_MID_STEP,    "RV2 MEDIUM - STEP",   "%", 0,  100, 1, ACC_COMMISSIONER, 1.0f },
-    { CFG_RV3_MIN,        "RV3 FINE - O2 MIN",   "%", 0,   25, 1, ACC_COMMISSIONER, 1.0f },
-    { CFG_RV3_MAX,        "RV3 FINE - O2 MAX",   "%", 0,   25, 1, ACC_COMMISSIONER, 1.0f },
-    { CFG_RV_STEP_SEC,    "STEP INTERVAL",       "s", 1, 3600, 0, ACC_COMMISSIONER, 1.0f },
-    { CFG_RV_MIN_OUT,     "VALVE MIN OUTPUT",    "%", 0,  100, 0, ACC_COMMISSIONER, 1.0f },
-    { CFG_RV_MAX_OUT,     "VALVE MAX OUTPUT",    "%", 0,  100, 0, ACC_COMMISSIONER, 1.0f },
-};
-
-static const Item ITEMS_PID[] = {
-    { CFG_O2_TARGET, "O2 TARGET (SETPOINT)", "%", 0,  25, 2, ACC_EXPERT, 1.0f },
-    { CFG_PID_KP,    "PID  Kp",              "",  0, 999, 2, ACC_EXPERT, 1.0f },
-    { CFG_PID_KI,    "PID  Ki",              "",  0, 999, 3, ACC_EXPERT, 1.0f },
-    { CFG_PID_KD,    "PID  Kd",              "",  0, 999, 3, ACC_EXPERT, 1.0f },
+    // --- ขอบช่วง O2 (%) ---
+    { CFG_RV1_MAX,        "O2 ABOVE -> MAXOUT",  "%", 0,  25, 1, ACC_COMMISSIONER, 1.0f }, // > นี้ = เปิดสุด
+    { CFG_RV1_MIN,        "O2 ABOVE -> ROUGH",   "%", 0,  25, 1, ACC_COMMISSIONER, 1.0f }, // นี้..MAXOUT = ROUGH
+    { CFG_RV2_MIN,        "O2 ABOVE -> MEDIUM",  "%", 0,  25, 1, ACC_COMMISSIONER, 1.0f }, // นี้..ROUGH = MEDIUM, ต่ำกว่า = FINE
+    // --- % เปิดวาล์วของแต่ละช่วง ---
+    { CFG_RV_MAX_OUT,     "MAXOUT - VALVE %",    "%", 0, 100, 0, ACC_COMMISSIONER, 1.0f },
+    { CFG_RV_COARSE_STEP, "ROUGH  - VALVE %",    "%", 0, 100, 0, ACC_COMMISSIONER, 1.0f },
+    { CFG_RV_MID_STEP,    "MEDIUM - VALVE %",    "%", 0, 100, 0, ACC_COMMISSIONER, 1.0f },
+    { CFG_RV_MIN_OUT,     "FINE   - VALVE %",    "%", 0, 100, 0, ACC_COMMISSIONER, 1.0f },
 };
 
 static const Item ITEMS_ALARM[] = {
@@ -137,8 +131,7 @@ static lv_color_t col_dim()   { return C_TEXT_DIM; }
 // *** ข้อความบนจอต้องเป็นอังกฤษเท่านั้น -- ฟอนต์ Montserrat ไม่มี glyph ไทย ***
 static const Group GROUPS[] = {
     { LV_SYMBOL_REFRESH,  "TIMERS",  "CP CB FB FP\nrun cycle + autostart", ITEMS_TIMER,  N(ITEMS_TIMER),  ACC_SUPERVISOR,   col_neon  },
-    { LV_SYMBOL_CHARGE,   "VALVE",   "RV zones 1/2/3\nstep sizes",         ITEMS_RV,     N(ITEMS_RV),     ACC_COMMISSIONER, col_ok    },
-    { LV_SYMBOL_SETTINGS, "PID",     "O2 setpoint\nKp  Ki  Kd",            ITEMS_PID,    N(ITEMS_PID),    ACC_EXPERT,       col_warn  },
+    { LV_SYMBOL_CHARGE,   "VALVE",   "RV O2 bands\nvalve open %",          ITEMS_RV,     N(ITEMS_RV),     ACC_COMMISSIONER, col_ok    },
     { LV_SYMBOL_BELL,     "ALARM",   "O1 vs O2 check\nwarning limits",     ITEMS_ALARM,  N(ITEMS_ALARM),  ACC_COMMISSIONER, col_press },
     { LV_SYMBOL_GPS,      "SENSORS", "slave ID / register\nof 3 sensors",  ITEMS_SENSOR, N(ITEMS_SENSOR), ACC_EXPERT,       col_o2b   },
     { LV_SYMBOL_POWER,    "SYSTEM",  "RS485 bus\nand PIN codes",           ITEMS_SYSTEM, N(ITEMS_SYSTEM), ACC_EXPERT,       col_dim   },

@@ -1,11 +1,12 @@
-# ============================================================================
+﻿# ============================================================================
 #  flash.ps1  --  คอมไพล์ + อัปโหลด บอร์ด (Nano หรือ จอ ESP32)
 #
 #  วิธีใช้:
-#     .\flash.ps1 nano COM15        # Arduino Nano  (*** ถอดสายจอ D0/D1 ก่อน ***)
-#     .\flash.ps1 display COM15      # จอ ESP32      (*** ถอดสาย link Nano ก่อน ***)
+#     powershell -ExecutionPolicy Bypass -File flash.ps1 nano COM5      # Nano (*** ถอดสายจอ D0/D1 ก่อน ***)
+#     powershell -ExecutionPolicy Bypass -File flash.ps1 display COM5   # จอ  (*** ถอดสาย link Nano ก่อน ***)
 #
 #  ต้องรัน setup.ps1 ก่อน 1 ครั้ง (ติดตั้ง cores + libraries)
+#  *** ไฟล์นี้ต้องเซฟเป็น UTF-8 "มี BOM" (PowerShell 5.1 อ่านไทยไม่มี BOM แล้ว parse พัง) ***
 # ============================================================================
 param(
     [Parameter(Mandatory=$true)][ValidateSet("nano","display")][string]$target,
